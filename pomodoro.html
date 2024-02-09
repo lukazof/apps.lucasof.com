@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="common/styles/default.css">
+    <script src="common/scripts/lightdarkmode.js"></script>
+    <link rel="icon" type="image/x-icon" href="common/img/icon.png">
+</head>
+<body>
+    <button onclick="toggleDarkMode()" id="toggletheme">💡</button>
+    <div class="container">
+        <a href="index.html" style="font-size: 18px; text-decoration: none; color:#472fd4">lucasof apps 🎈</a>
+        <h1>Pomodoro Timer</h1>
+        <div id="wordDisplay">25:00</div>
+        <button id="startButton" onclick="startTimer()">Start</button>
+        <button id="pauseButton" onclick="pauseTimer()" style="display: none;">Pause</button>
+        <button id="resetButton" onclick="resetTimer()" style="display: none;">Reset</button>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft = 25 * 60; 
+        let isRunning = false;
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(updateTimer, 1000);
+                document.getElementById('startButton').style.display = 'none';
+                document.getElementById('pauseButton').style.display = 'inline-block';
+                document.getElementById('resetButton').style.display = 'inline-block';
+            }
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            document.getElementById('wordDisplay').innerText = `${minutes}:${seconds}`;
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                document.getElementById('wordDisplay').innerText = 'Time\'s up!';
+            } else {
+                timeLeft--;
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('startButton').style.display = 'inline-block';
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timeLeft = 25 * 60;
+            isRunning = false;
+            document.getElementById('wordDisplay').innerText = '25:00';
+            document.getElementById('startButton').style.display = 'inline-block';
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('resetButton').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

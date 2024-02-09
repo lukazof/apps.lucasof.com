@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Typing Game</title>
+    <link rel="stylesheet" href="common/styles/default.css">
+    <script src="common/scripts/lightdarkmode.js"></script>
+    <link rel="icon" type="image/x-icon" href="common/img/icon.png">
+
+</head>
+<body>
+    <button onclick="toggleDarkMode()" id="toggletheme">💡</button>
+    <div class="container">
+        <a id="apps-lucasof" href="index.html">lucasof apps 🎈</a>
+        <h1>Speed Typing Game</h1>
+        <div id="score">Score: <span id="playerScore">0</span></div>
+        <div id="timer">Time: <span id="timeLeft">60</span> seconds</div>
+        <div id="wordDisplay"></div>
+        <input type="text" id="textInput" placeholder="Type the word here">
+        <button onclick="play()">Start</button>
+    </div>
+
+    <script>
+        const words = [
+            "apple", "banana", "orange", "grape", "strawberry",
+            "watermelon", "pineapple", "kiwi", "blueberry", "peach",
+            "pear", "mango", "cherry", "plum", "lemon",
+            "apricot", "coconut", "fig", "grapefruit", "papaya",
+            "car", "house", "tree", "cat", "dog",
+            "book", "computer", "desk", "chair", "lamp",
+            "table", "phone", "cup", "mirror", "window",
+            "door", "bed", "clock", "television", "radio",
+            "flower", "garden", "grass", "sky", "cloud",
+            "sun", "moon", "star", "planet", "rocket",
+            "pizza", "pasta", "burger", "fries", "salad",
+            "soup", "sandwich", "cake", "cookie", "ice cream",
+            "chocolate", "candy", "popcorn", "cheese", "bread",
+            "shoe", "shirt", "pants", "dress", "hat",
+            "glove", "socks", "jacket", "coat", "scarf",
+            "glasses", "watch", "bracelet", "ring", "necklace",
+            "umbrella", "bag", "wallet", "key", "map",
+            "flag", "guitar", "drum", "piano", "violin",
+            "trumpet", "flute", "saxophone", "keyboard", "microphone",
+            "chair", "spoon", "fork", "knife", "plate",
+            "cupboard", "oven", "microwave", "refrigerator", "toaster",
+            "sink", "towel", "shower", "bathtub", "toilet",
+            "brush", "toothpaste", "soap", "shampoo", "conditioner",
+            "towel", "mirror", "perfume", "lotion", "hairdryer",
+        ];
+
+
+        let timer;
+        let playTimer;
+        let timeLeft;
+        let playerScore = 0;
+
+        let playing = false;
+
+        function generateWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            document.getElementById('wordDisplay').innerText = words[randomIndex];
+        }
+
+        function onLoadPage(){
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+
+            document.getElementById('playerScore').innerText = playerScore;
+
+            if(playing){
+                timeLeft--;
+                document.getElementById('timeLeft').innerText = timeLeft;
+
+                if (timeLeft === 0) {
+                    document.getElementById('textInput').disabled = true;
+                    document.getElementById('textInput').value = "";
+                    playing = false;
+                    playTimer = clearInterval();
+
+                    if(playerScore <= 40){
+                        document.getElementById('wordDisplay').innerText = "Time's up! Your score is below average!";
+                    }
+
+                    if(playerScore > 40 && playerScore <= 60){
+                        document.getElementById('wordDisplay').innerText = "Time's up! Your score is average!";
+                    }
+
+                    if(playerScore > 60 && playerScore <= 80){
+                        document.getElementById('wordDisplay').innerText = "Time's up! Your score is above average!";
+                    }
+
+                    if(playerScore > 80 && playerScore <= 100){
+                        document.getElementById('wordDisplay').innerText = "Time's up! You're good!";
+                    }
+
+                    if(playerScore > 100 && playerScore <= 150){
+                        document.getElementById('wordDisplay').innerText = "Time's up! You're one of the best!";
+                    }
+
+                    if(playerScore >= 150){
+                        document.getElementById('wordDisplay').innerText = "Time's up! THE FLASH! ⚡";
+                    }
+                }
+            }
+
+        }
+
+        function play(){
+            playing = true;
+            timeLeft = 60;
+            playerScore = 0;
+            document.getElementById('textInput').disabled = false;
+            generateWord();
+            playTimer = setInterval(checkWord, 100)
+
+        }
+
+        function checkWord() {
+            const wordInput = document.getElementById('textInput').value.trim().toLowerCase();
+            const currentWord = document.getElementById('wordDisplay').innerText.toLowerCase();
+
+            if (wordInput === currentWord) {
+                playerScore++;
+                document.getElementById('textInput').value = "";
+                generateWord();
+            }
+        }
+
+        window.onload = function() {
+            onLoadPage();
+        };
+    </script>
+</body>
+</html>

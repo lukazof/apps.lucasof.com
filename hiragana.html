@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Hiragana</title>
+    <link rel="stylesheet" href="common/styles/default.css">
+    <script src="common/scripts/lightdarkmode.js"></script>
+    <link rel="icon" type="image/x-icon" href="common/img/icon.png">
+
+</head>
+<body>
+    <button onclick="toggleDarkMode()" id="toggletheme">💡</button>
+    <div class="container">
+        <a href="index.html" style="font-size: 18px; text-decoration: none; color:#472fd4">lucasof apps 🎈</a>
+        <h1>Guess the Hiragana</h1>
+        <div id="wordDisplay"></div>
+        <p id ="streakText"></p>
+        <input type="text" id="romajiInput" placeholder="Enter Romaji">
+        <button onclick="checkAnswer()">Send</button>
+        <p id="answerStatus"></p>
+        <button id="resetButton" onclick="nextHiragana()"> Reset</button>
+    </div>
+
+    <script>
+        const hiraganaList = [
+            { hiragana: "あ", romaji: "a" },
+            { hiragana: "い", romaji: "i" },
+            { hiragana: "う", romaji: "u" },
+            { hiragana: "え", romaji: "e" },
+            { hiragana: "お", romaji: "o" },
+            { hiragana: "か", romaji: "ka" },
+            { hiragana: "き", romaji: "ki" },
+            { hiragana: "く", romaji: "ku" },
+            { hiragana: "け", romaji: "ke" },
+            { hiragana: "こ", romaji: "ko" },
+            { hiragana: "さ", romaji: "sa" },
+            { hiragana: "し", romaji: "shi" },
+            { hiragana: "す", romaji: "su" },
+            { hiragana: "せ", romaji: "se" },
+            { hiragana: "そ", romaji: "so" },
+            { hiragana: "た", romaji: "ta" },
+            { hiragana: "ち", romaji: "chi" },
+            { hiragana: "つ", romaji: "tsu" },
+            { hiragana: "て", romaji: "te" },
+            { hiragana: "と", romaji: "to" },
+            { hiragana: "な", romaji: "na" },
+            { hiragana: "に", romaji: "ni" },
+            { hiragana: "ぬ", romaji: "nu" },
+            { hiragana: "ね", romaji: "ne" },
+            { hiragana: "の", romaji: "no" },
+            { hiragana: "は", romaji: "ha" },
+            { hiragana: "ひ", romaji: "hi" },
+            { hiragana: "ふ", romaji: "fu" },
+            { hiragana: "へ", romaji: "he" },
+            { hiragana: "ほ", romaji: "ho" },
+            { hiragana: "ま", romaji: "ma" },
+            { hiragana: "み", romaji: "mi" },
+            { hiragana: "む", romaji: "mu" },
+            { hiragana: "め", romaji: "me" },
+            { hiragana: "も", romaji: "mo" },
+            { hiragana: "や", romaji: "ya" },
+            { hiragana: "ゆ", romaji: "yu" },
+            { hiragana: "よ", romaji: "yo" },
+            { hiragana: "ら", romaji: "ra" },
+            { hiragana: "り", romaji: "ri" },
+            { hiragana: "る", romaji: "ru" },
+            { hiragana: "れ", romaji: "re" },
+            { hiragana: "ろ", romaji: "ro" },
+            { hiragana: "わ", romaji: "wa" },
+            { hiragana: "を", romaji: "wo" },
+            { hiragana: "ん", romaji: "n" },
+        ];
+
+        let currentIndex = 0;
+        let streak = 0;
+        let record = 0;
+
+        function displayHiragana() {
+            document.getElementById('wordDisplay').innerText = hiraganaList[currentIndex].hiragana;
+        }
+
+        function checkAnswer() {
+            const romajiInput = document.getElementById('romajiInput').value.trim();
+            const correctAnswer = hiraganaList[currentIndex].romaji;
+
+            if (romajiInput.toLowerCase() === correctAnswer) {
+                document.getElementById('answerStatus').innerText = "Correct!";
+                streak++;
+                
+                if(streak > record){
+                    record = streak;
+                }
+
+                document.getElementById('streakText').innerText = "Streak: " + streak + " | Record: " + record;
+
+                nextHiragana();
+            } else {
+                document.getElementById('romajiInput').value = "";
+                document.getElementById('answerStatus').innerText = "Incorrect. Try again.";
+                document.getElementById('resetButton').style.display = "inline";
+
+                if(record != 0){
+                    document.getElementById('streakText').innerText = "Record: " + record;
+                }
+                
+                streak = 0;
+
+            }
+        }
+
+        function nextHiragana() {
+            const randomIndex = Math.floor(Math.random() * hiraganaList.length);
+            currentIndex = randomIndex;
+            document.getElementById('romajiInput').value = "";
+            displayHiragana();
+            document.getElementById('answerStatus').innerText = "";
+            document.getElementById('resetButton').style.display = "none";
+        }
+
+        window.onload = nextHiragana();
+
+    </script>
+</body>
+</html>
